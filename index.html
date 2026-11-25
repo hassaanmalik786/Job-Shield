@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JobShield analyzes job advertisements for potential recruitment scam indicators.">
+  <title>JobShield | Fake Job Advertisement Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <span class="brand-mark">J</span>
+        <span>Job<span>Shield</span><small>CYBERSECURITY SCANNER</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <a class="side-link active" href="#scanner"><span>⌕</span> New scan</a>
+      <a class="side-link" href="#history"><span>◷</span> Scan history</a>
+      <div class="sidebar-note">
+        <div class="note-icon">盾</div>
+        <strong>Stay alert online</strong>
+        <p>Never pay a recruiter or share sensitive information before independently verifying the employer.</p>
+      </div>
+      <div class="side-bottom">ACADEMIC PROJECT · VERSION 1.0</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">CYBERSECURITY / RECRUITMENT SAFETY</div>
+          <h1>Fake Job Advertisement Detector</h1>
+          <p class="top-subtitle">Analyze job offers. Identify warning signs. Make safer decisions.</p>
+        </div>
+        <div class="status-pill"><span class="status-dot"></span> Scanner ready</div>
+      </header>
+
+      <section class="hero-strip">
+        <div>
+          <div class="hero-kicker">JOB SEEKER PROTECTION</div>
+          <h2>Detect suspicious jobs<br><em>before you apply.</em></h2>
+          <p>Submit a job link, paste the advertisement, or do both. JobShield checks available evidence and explains its findings.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="shield">✓</div><span class="spark spark-one">✦</span><span class="spark spark-two">✧</span>
+        </div>
+      </section>
+
+      <section class="scanner-card" id="scanner">
+        <div class="section-head">
+          <div><div class="eyebrow blue">START ANALYSIS</div><h2>Scan a job advertisement</h2></div>
+          <span class="step-tag">01 / INPUT</span>
+        </div>
+        <form id="scanForm">
+          <label for="jobUrl">Job advertisement URL <span class="optional">OPTIONAL</span></label>
+          <div class="url-input-wrap"><span class="input-icon">↗</span><input id="jobUrl" type="url" placeholder="https://company.com/careers/job-opening" autocomplete="url"></div>
+          <div class="or-divider"><span>AND / OR</span></div>
+          <label for="jobText">Paste job advertisement text <span class="optional">OPTIONAL</span></label>
+          <textarea id="jobText" rows="7" placeholder="Paste the complete job description here. Include salary, company name, application instructions, contact details and any payment requests..."></textarea>
+          <div class="form-foot">
+            <span class="privacy-hint">ⓘ Submit only information you are authorized to analyze. Avoid personal documents.</span>
+            <button class="primary-btn" id="scanBtn" type="submit"><span>Analyze advertisement</span><b>→</b></button>
+          </div>
+        </form>
+        <div id="errorBox" class="error-box" role="alert" hidden></div>
+        <div id="loadingBox" class="loading-box" hidden><span class="spinner"></span><div><strong>Analyzing advertisement...</strong><small>Checking text indicators and available website signals.</small></div></div>
+      </section>
+
+      <section id="results" class="results-section" hidden>
+        <div class="section-head result-heading">
+          <div><div class="eyebrow blue">ANALYSIS COMPLETE</div><h2>Security analysis report</h2></div>
+          <span class="step-tag" id="scanReference">SCAN</span>
+        </div>
+        <div class="result-grid">
+          <div class="score-card">
+            <div class="score-top"><span>OVERALL RISK SCORE</span><span class="score-info" title="Heuristic indicator, not probability">i</span></div>
+            <div class="score-line"><strong id="scoreValue">0</strong><span>/ 100</span></div>
+            <div class="meter"><div id="scoreMeter"></div></div>
+            <div class="risk-label" id="riskLabel">Low Risk</div>
+            <p id="riskSummary"></p>
+            <div class="score-foot">Higher score = more configured warning signs detected.</div>
+          </div>
+          <div class="quick-card">
+            <div class="card-title">SCAN OVERVIEW</div>
+            <div class="quick-row"><span>Findings detected</span><strong id="findingCount">0</strong></div>
+            <div class="quick-row"><span>Website domain</span><strong id="domainValue">Not supplied</strong></div>
+            <div class="quick-row"><span>HTTPS</span><strong id="httpsValue">Not checked</strong></div>
+            <div class="quick-row"><span>Scan time</span><strong id="scanTime">—</strong></div>
+            <button id="downloadBtn" class="download-btn" type="button">↓ Download full PDF report</button>
+          </div>
+        </div>
+        <div class="report-card">
+          <div class="report-card-head"><div><div class="eyebrow blue">EVIDENCE REVIEW</div><h3>Detected indicators</h3></div><span class="count-chip" id="indicatorChip">0 indicators</span></div>
+          <div id="findingsList" class="findings-list"></div>
+        </div>
+        <div class="report-card">
+          <div class="report-card-head"><div><div class="eyebrow blue">NEXT STEPS</div><h3>Security recommendations</h3></div></div>
+          <ul id="recommendationsList" class="recommendations"></ul>
+        </div>
+        <div id="fetchNotice" class="notice" hidden></div>
+        <div class="disclaimer"><strong>Important:</strong> This tool provides an initial, rule-based assessment. It cannot prove that a job is genuine or fraudulent. A low score is not a safety guarantee. Verify the employer independently before paying money or sharing sensitive information.</div>
+      </section>
+
+      <section class="history-section" id="history">
+        <div class="section-head">
+          <div><div class="eyebrow blue">YOUR ACTIVITY</div><h2>Recent scan history</h2></div>
+          <button class="text-btn" id="refreshHistory" type="button">↻ Refresh</button>
+        </div>
+        <div class="history-card">
+          <div class="history-head"><span>DATE</span><span>JOB URL</span><span>RISK</span><span>REPORT</span></div>
+          <div id="historyRows"><div class="empty-history">Your recent scans will appear here.</div></div>
+        </div>
+      </section>
+      <footer><span>JOBSHIELD © 2026</span><span>Built for safer online recruitment awareness</span></footer>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
